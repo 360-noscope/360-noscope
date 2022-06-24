@@ -1,0 +1,200 @@
+#include <iostream>
+
+using namespace std;
+
+class character
+{
+public:
+// initialize variables
+  string name;
+  int health;
+  int attack;
+  int temp_attack;
+  int defense;
+  int temp_defense;
+  int speed;
+
+  //constructor
+  character(string n, int h, int a, int d, int s)
+{
+  name = n;
+  health = h;
+  attack = a;
+  defense = d;
+  speed = s;
+}
+
+//getters / setters
+  int take_damage(int d)
+{
+  health -= d;
+  return health;
+}
+
+  int get_speed()
+{
+  return speed;
+}
+
+  int get_health()
+{
+  return health;
+}
+
+//attack options
+  virtual int attackChoice()
+{
+  string choice;
+  cout << name << "What do you do:" << endl;
+  cout << "attack" << endl;
+  cout << "defense" << endl;
+
+  cin >> choice;
+
+  if (choice == "attack")
+  {
+    return attack;
+  }
+
+  else if (choice == "defense")
+  {
+    temp_defense *= 1.5;
+    return 0;
+  }
+}
+
+};
+
+//Enemy
+class Enemy : public character
+{
+  public:
+// Enemy Constructor
+  Enemy(string n, int h, int a, int d)
+{
+  name = n;
+  health = h;
+  attack = a;
+  defense = d;
+}
+
+//Allow enemy to attack
+  int attackChoice() override
+{
+  int choice;
+  cout << name << "What do you do:" << endl;
+  cout << "attack" << endl;
+  cout << "defense" << endl;
+
+  srand(time(NULL));
+  choice = rand() % 2;
+
+  if (choice == 0)
+  {
+    return attack;
+  }
+
+  else if (choice == 1)
+  {
+    temp_defense *= 1.5;
+    return 0;
+  }
+}
+};
+
+//victory message
+void victory()
+{
+  cout << "Victory, You won" << endl;
+}
+
+// loss message
+void BlackOut()
+{
+  cout << "You blacked out" << endl;
+}
+
+//introduction
+void introduction()
+{
+  std::cout << "What is your name champion to be" << endl;
+}
+
+//showcase health
+void showhealth(int health){
+  int hearts = health / 10;
+  std::cout << "Health[";
+  for(int i = 0; i < hearts; i++)
+    std::cout << "=";
+  std::cout << "]: " << health << endl;
+}
+
+
+void showStats(int PH, int MH){
+	showhealth(PH);
+	cout << "" << endl;
+	showhealth(MH);
+	cout << "" <<  endl;
+  }
+
+
+//battle sequence
+void battle(character& C, Enemy& E)
+{
+  while (C.get_health() > 0 || E.get_health() > 0)
+    {
+    showStats(C.get_health(), E.get_health());
+    if (C.get_speed() > E.get_speed())
+    {
+    E.take_damage(C.attackChoice());
+    if (E.get_health() <= 0)
+      {
+        victory();
+        break;
+      }
+    cout << endl;
+    C.take_damage(E.attackChoice());
+    if (C.get_health() <= 0)
+      {
+        BlackOut();
+        break;
+        }        
+    }
+      
+    else if (E.get_speed() > C.get_speed())
+    {
+      C.take_damage(E.attackChoice());
+      if (C.get_health() <= 0)
+        {
+        BlackOut();
+        break;
+      }
+    cout << endl;
+    C.take_damage(E.attackChoice());
+    if (E.get_health() <= 0)
+      {
+        BlackOut();
+        break;
+      }        
+    }
+  }
+}
+
+int main() {
+  introduction();
+  string name;
+  cin >> name;
+  cout << endl;
+  character character(name, 100, 5, 5, 5);
+  Enemy Enemy("bill", 50, 5, 5);
+  battle(character, Enemy);
+  
+  //game loop
+  bool running = true;
+  while (running)
+    {
+      break;
+    }
+  
+return 0;
+}
