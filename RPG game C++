@@ -3,7 +3,7 @@
 using namespace std;
 
 class character
-{
+{ 
 public:
 // initialize variables
   string name;
@@ -45,7 +45,7 @@ public:
   virtual int attackChoice()
 {
   string choice;
-  cout << name << "What do you do:" << endl;
+  cout << name << " What do you do:" << endl;
   cout << "attack" << endl;
   cout << "defense" << endl;
 
@@ -53,11 +53,13 @@ public:
 
   if (choice == "attack")
   {
+    cout << name << " used attack"  << endl;
     return attack;
   }
 
   else if (choice == "defense")
   {
+    cout << name  << " used defense" << endl;
     temp_defense *= 1.5;
     return 0;
   }
@@ -70,32 +72,28 @@ class Enemy : public character
 {
   public:
 // Enemy Constructor
-  Enemy(string n, int h, int a, int d)
+  Enemy(string n, int h, int a, int d, int s) : character(n, h, a, d, s)
 {
-  name = n;
-  health = h;
-  attack = a;
-  defense = d;
+
 }
 
 //Allow enemy to attack
   int attackChoice() override
 {
   int choice;
-  cout << name << "What do you do:" << endl;
-  cout << "attack" << endl;
-  cout << "defense" << endl;
 
   srand(time(NULL));
   choice = rand() % 2;
 
   if (choice == 0)
   {
+    cout << "bill attacked" << endl;
     return attack;
   }
 
   else if (choice == 1)
   {
+    cout << "bill used defense" << endl;
     temp_defense *= 1.5;
     return 0;
   }
@@ -186,7 +184,7 @@ int main() {
   cin >> name;
   cout << endl;
   character character(name, 100, 5, 5, 5);
-  Enemy Enemy("bill", 50, 5, 5);
+  Enemy Enemy("bill", 50, 5, 5, 4);
   battle(character, Enemy);
   
   //game loop
